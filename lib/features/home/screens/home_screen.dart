@@ -177,6 +177,22 @@ class _HomeScreenState extends State<HomeScreen> {
       thalassemia,
       heartDisease,
     ];
+
+    List<String> heartData = [
+      'Age: Represents the age of the individual in years.',
+      'Gender: Represents the gender of the individual.\n   - Female\n   - Male',
+      'ChestPainType: Chest pain type.\n   - Typical angina\n   - Atypical angina\n   - Non-anginal pain\n   - Asymptomatic',
+      'RestingBloodPressure: Resting blood pressure in mm Hg.',
+      'FastingBloodSugar: Fasting blood sugar > 120 mg/dl.\n   - False\n   - True',
+      'RestingECG: Resting electrocardiographic results.\n   - Normal\n   - Having ST-T wave abnormality\n   - Showing probable or definite left ventricular hypertrophy by Estes\' criteria',
+      'MaxHeartRate: Maximum heart rate achieved.',
+      'ExerciseInducedAngina: Exercise induced angina.\n   - No\n   - Yes',
+      'STDepression: ST depression induced by exercise relative to rest.',
+      'Slope: Slope of the peak exercise ST segment.\n   - Upsloping\n   - Flat\n   - Downsloping',
+      'NumMajorVessels: Number of major vessels (0-3) colored by fluoroscopy.',
+      'Thalassemia: Thalassemia.\n   - Normal\n   - Fixed defect\n   - Reversible defect',
+      'HeartDisease: Presence or absence of heart disease.\n   - No heart disease\n   - Heart disease present',
+    ];
     String storedName = Provider.of<NameProvider>(context).enteredName;
     final dropDownFormKey = GlobalKey<FormState>();
 
