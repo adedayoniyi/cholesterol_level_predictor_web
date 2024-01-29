@@ -16,6 +16,7 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
   final TextEditingController nameController = TextEditingController();
+  final nameFormKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,95 +30,107 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Welcome to the Chelosterol Predicting We App",
-              style: TextStyle(
-                fontSize: getValueForScreenType<double>(
-                  context: context,
-                  mobile: 17.sp,
-                  tablet: 17.sp,
-                  desktop: 20,
+        child: Form(
+          key: nameFormKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "Welcome to the Chelosterol Predicting We App",
+                style: TextStyle(
+                  fontSize: getValueForScreenType<double>(
+                    context: context,
+                    mobile: 17.sp,
+                    tablet: 17.sp,
+                    desktop: 20,
+                  ),
+                  fontWeight: FontWeight.bold,
                 ),
-                fontWeight: FontWeight.bold,
               ),
-            ),
-            SizedBox(
-              height: 15.h,
-            ),
-            Container(
-              height: getValueForScreenType<double>(
-                context: context,
-                mobile: 200.h,
-                tablet: 200.h,
-                desktop: 200,
+              SizedBox(
+                height: 15.h,
               ),
-              width: getValueForScreenType<double>(
-                context: context,
-                mobile: 330.w,
-                tablet: 300.w,
-                desktop: 400,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade400,
-                    // offset: Offset(2, 2),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                  )
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: CustomTextFormField(
-                      hintText: "Enter your name",
-                      controller: nameController,
+              Container(
+                height: getValueForScreenType<double>(
+                  context: context,
+                  mobile: 200.h,
+                  tablet: 200.h,
+                  desktop: 200,
+                ),
+                width: getValueForScreenType<double>(
+                  context: context,
+                  mobile: 330.w,
+                  tablet: 300.w,
+                  desktop: 400,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade400,
+                      // offset: Offset(2, 2),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                    )
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: CustomTextFormField(
+                        hintText: "Enter your name",
+                        controller: nameController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please Enter your name';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: getValueForScreenType<double>(
-                      context: context,
-                      mobile: 20.h,
-                      tablet: 20.h,
-                      desktop: 20,
+                    SizedBox(
+                      height: getValueForScreenType<double>(
+                        context: context,
+                        mobile: 20.h,
+                        tablet: 20.h,
+                        desktop: 20,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: CustomButton(
-                      buttonText: "Continue",
-                      buttonTextColor: Colors.white,
-                      borderRadius: 20,
-                      onTap: () {
-                        // Get the NameProvider from the context
-                        var nameProvider =
-                            Provider.of<NameProvider>(context, listen: false);
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 30),
+                      child: CustomButton(
+                        buttonText: "Continue",
+                        buttonTextColor: Colors.white,
+                        borderRadius: 20,
+                        onTap: () {
+                          if (nameFormKey.currentState!.validate()) {
+                            // Get the NameProvider from the context
+                            var nameProvider = Provider.of<NameProvider>(
+                                context,
+                                listen: false);
 
-                        // Save the entered name using the provider
-                        nameProvider.setEnteredName(nameController.text);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return HomeScreen();
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
+                            // Save the entered name using the provider
+                            nameProvider.setEnteredName(nameController.text);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return HomeScreen();
+                                },
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

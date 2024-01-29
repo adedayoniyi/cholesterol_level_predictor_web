@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             fontFamily: GoogleFonts.fredoka().fontFamily,
             colorScheme: ColorScheme.fromSeed(
-              seedColor: Color(0xFF014e2c),
+              seedColor: Color(0xFF7266f8),
             ),
             useMaterial3: true,
           ),

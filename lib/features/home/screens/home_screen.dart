@@ -178,208 +178,243 @@ class _HomeScreenState extends State<HomeScreen> {
       heartDisease,
     ];
     String storedName = Provider.of<NameProvider>(context).enteredName;
+    final dropDownFormKey = GlobalKey<FormState>();
 
     return Scaffold(
-      body: Column(
-        children: [
-          Text(
-            "Hey! $storedName, What's your Cholesterol level?",
-            style: TextStyle(
-              fontSize: getValueForScreenType<double>(
-                context: context,
-                mobile: 17.sp,
-                tablet: 17.sp,
-                desktop: 25,
-              ),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: getValueForScreenType<int>(
+      body: Form(
+        key: dropDownFormKey,
+        child: Column(
+          children: [
+            Text(
+              "Hey! $storedName, What's your Cholesterol level?",
+              style: TextStyle(
+                fontSize: getValueForScreenType<double>(
                   context: context,
-                  mobile: 1,
-                  tablet: 2,
-                  desktop: 3,
+                  mobile: 17.sp,
+                  tablet: 17.sp,
+                  desktop: 25,
                 ),
-                childAspectRatio: 300 / 90,
+                fontWeight: FontWeight.bold,
               ),
-              itemCount: 13,
-              itemBuilder: (BuildContext context, int index) {
-                var dropdownProvider =
-                    Provider.of<DropdownSelectionProvider>(context);
+            ),
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: getValueForScreenType<int>(
+                    context: context,
+                    mobile: 1,
+                    tablet: 2,
+                    desktop: 3,
+                  ),
+                  childAspectRatio: 300 / 90,
+                ),
+                itemCount: 13,
+                itemBuilder: (BuildContext context, int index) {
+                  var dropdownProvider =
+                      Provider.of<DropdownSelectionProvider>(context);
 
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 100,
-                    width: 300,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: containerColors[index]),
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 100,
+                      width: 300,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: containerColors[index]),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 10,
                           ),
-                          child: Center(
-                            child: Image.asset(containerIcons[index]),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Expanded(
-                          child: DropdownButtonFormField(
-                            icon: Icon(
-                              Icons.keyboard_arrow_down,
+                          Container(
+                            height: 50,
+                            width: 50,
+                            decoration: BoxDecoration(
                               color: Colors.white,
-                              size: 30,
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            value: dropdownProvider.selectedItems[index],
-                            borderRadius: BorderRadius.circular(15),
-                            items: myData[index]
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    overflow: TextOverflow.ellipsis,
-                                    fontSize: getValueForScreenType<double>(
-                                      context: context,
-                                      mobile: 17.sp,
-                                      tablet: 20,
-                                      desktop: 17,
+                            child: Center(
+                              child: Image.asset(containerIcons[index]),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: DropdownButtonFormField(
+                              icon: Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              value: dropdownProvider.selectedItems[index],
+                              borderRadius: BorderRadius.circular(15),
+                              items: myData[index]
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400,
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: getValueForScreenType<double>(
+                                        context: context,
+                                        mobile: 17.sp,
+                                        tablet: 20,
+                                        desktop: 17,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (newValue) {
-                              setState(() {
-                                dropdownProvider.updateSelectedItem(
-                                    index, newValue);
+                                );
+                              }).toList(),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  dropdownProvider.updateSelectedItem(
+                                      index, newValue);
 
-                                print(dropdownProvider.selectedItems[0]);
-                              });
-                            },
-                            // style: const TextStyle(
-                            //   color: Colors.black,
-                            //   fontWeight: FontWeight.bold,
-                            //   fontSize: 19,
-                            // ),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: containerData[index],
-                              hintStyle: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15,
+                                  print(dropdownProvider.selectedItems[0]);
+                                });
+                              },
+                              // style: const TextStyle(
+                              //   color: Colors.black,
+                              //   fontWeight: FontWeight.bold,
+                              //   fontSize: 19,
+                              // ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: containerData[index],
+                                hintStyle: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                ),
                               ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please Select a field here';
+                                }
+                                return null;
+                              },
+                              menuMaxHeight: 200,
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please Select a field here';
-                              }
-                              return null;
-                            },
-                            menuMaxHeight: 200,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: getValueForScreenType<double>(
-                context: context,
-                mobile: 15.w,
-                tablet: 15.w,
-                desktop: 50,
-              ),
-              vertical: getValueForScreenType<double>(
-                context: context,
-                mobile: 15.h,
-                tablet: 15.h,
-                desktop: 10,
+                  );
+                },
               ),
             ),
-            child: CustomButton(
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: getValueForScreenType<double>(
+                  context: context,
+                  mobile: 15.w,
+                  tablet: 15.w,
+                  desktop: 50,
+                ),
+                vertical: getValueForScreenType<double>(
+                  context: context,
+                  mobile: 15.h,
+                  tablet: 15.h,
+                  desktop: 10,
+                ),
+              ),
+              child: CustomButton(
                 buttonText: "Check",
                 buttonTextColor: Colors.black,
 
                 // buttonColor: ,
                 borderRadius: 20,
                 onTap: () async {
-                  var dropdownProvider = Provider.of<DropdownSelectionProvider>(
-                      context,
-                      listen: false);
-                  Map<String, dynamic> inputData = {
-                    "Age": int.parse(dropdownProvider.selectedItems[0]!),
-                    "Gender": dropdownProvider.selectedItems[1],
-                    "ChestPainType": dropdownProvider.selectedItems[2],
-                    "RestingBloodPressure":
-                        int.parse(dropdownProvider.selectedItems[3]!),
-                    "FastingBloodSugar": dropdownProvider.selectedItems[4],
-                    "RestingECG": dropdownProvider.selectedItems[5],
-                    "MaxHeartRate":
-                        int.parse(dropdownProvider.selectedItems[6]!),
-                    "ExerciseInducedAngina": dropdownProvider.selectedItems[7],
-                    "STDepression":
-                        double.parse(dropdownProvider.selectedItems[8]!),
-                    "Slope": dropdownProvider.selectedItems[9]!,
-                    "NumMajorVessels":
-                        int.parse(dropdownProvider.selectedItems[10]!),
-                    "Thalassemia": dropdownProvider.selectedItems[11],
-                    "HeartDisease":
-                        int.parse(dropdownProvider.selectedItems[12]!),
-                  };
-                  print(inputData);
-                  try {
-                    double predictedCholesterol =
-                        await sendPostRequest(inputData);
-
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                            title: Text("Check Completed!"),
-                            content: Text(
-                              "Your chelostrol level is: $predictedCholesterol",
-                              style: TextStyle(
-                                fontSize: getValueForScreenType<double>(
-                                  context: context,
-                                  mobile: 15.sp,
-                                  tablet: 14.sp,
-                                  desktop: 16,
+                  if (dropDownFormKey.currentState!.validate()) {
+                    var dropdownProvider =
+                        Provider.of<DropdownSelectionProvider>(context,
+                            listen: false);
+                    Map<String, dynamic> inputData = {
+                      "Age": int.parse(dropdownProvider.selectedItems[0]!),
+                      "Gender": dropdownProvider.selectedItems[1],
+                      "ChestPainType": dropdownProvider.selectedItems[2],
+                      "RestingBloodPressure":
+                          int.parse(dropdownProvider.selectedItems[3]!),
+                      "FastingBloodSugar": dropdownProvider.selectedItems[4],
+                      "RestingECG": dropdownProvider.selectedItems[5],
+                      "MaxHeartRate":
+                          int.parse(dropdownProvider.selectedItems[6]!),
+                      "ExerciseInducedAngina":
+                          dropdownProvider.selectedItems[7],
+                      "STDepression":
+                          double.parse(dropdownProvider.selectedItems[8]!),
+                      "Slope": dropdownProvider.selectedItems[9]!,
+                      "NumMajorVessels":
+                          int.parse(dropdownProvider.selectedItems[10]!),
+                      "Thalassemia": dropdownProvider.selectedItems[11],
+                      "HeartDisease":
+                          int.parse(dropdownProvider.selectedItems[12]!),
+                    };
+                    print(inputData);
+                    try {
+                      showDialog(
+                        context: context,
+                        builder: (context) => WillPopScope(
+                          onWillPop: () async => false,
+                          child: Center(
+                            child: AlertDialog(
+                              backgroundColor: Colors.transparent,
+                              surfaceTintColor: Colors.transparent,
+                              shadowColor: Colors.transparent,
+                              elevation: 0,
+                              content: Center(
+                                child: Container(
+                                  height: 80,
+                                  width: 80,
+                                  decoration: const BoxDecoration(
+                                      color: Colors.transparent),
+                                  child: const CircularProgressIndicator(),
                                 ),
                               ),
-                            ));
-                      },
-                    );
-                    print('Predicted Cholesterol: $predictedCholesterol');
-                  } catch (e) {
-                    // Handle errors
-                    print('Error: $e');
+                            ),
+                          ),
+                        ),
+                      );
+
+                      double predictedCholesterol =
+                          await sendPostRequest(inputData);
+
+                      Navigator.pop(context);
+
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                              title: Text("Check Completed!"),
+                              content: Text(
+                                "Your chelostrol level is: $predictedCholesterol",
+                                style: TextStyle(
+                                  fontSize: getValueForScreenType<double>(
+                                    context: context,
+                                    mobile: 15.sp,
+                                    tablet: 14.sp,
+                                    desktop: 16,
+                                  ),
+                                ),
+                              ));
+                        },
+                      );
+                      print('Predicted Cholesterol: $predictedCholesterol');
+                    } catch (e) {
+                      // Handle errors
+                      print('Error: $e');
+                    }
                   }
-                }),
-          )
-        ],
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
