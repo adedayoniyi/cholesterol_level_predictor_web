@@ -35,7 +35,7 @@ class CustomTextFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      autofocus: true,
+      // autofocus: true,
       keyboardType: keyboardType,
       obscureText: obscureText,
       controller: controller,
@@ -44,21 +44,21 @@ class CustomTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderSide: const BorderSide(
-            color: Color(0xFF014e2c),
+            color: Color(0xFF7266f8),
             width: 2,
           ),
           borderRadius: BorderRadius.circular(15),
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(
-            color: Color(0xFF014e2c),
+            color: Color(0xFF7266f8),
             width: 2,
           ),
           borderRadius: BorderRadius.circular(15),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(
-            color: Color(0xFF014e2c),
+            color: Color(0xFF7266f8),
             width: 2,
           ),
           borderRadius: BorderRadius.circular(15),

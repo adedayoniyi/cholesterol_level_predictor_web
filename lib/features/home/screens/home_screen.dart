@@ -1,6 +1,11 @@
+import 'package:cholesterol_predictor/features/home/providers/drop_down_selection_provider.dart';
 import 'package:cholesterol_predictor/features/home/services/home_services.dart';
+import 'package:cholesterol_predictor/features/welcome/providers/name_provider.dart';
+import 'package:cholesterol_predictor/widgets/custom_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,27 +18,56 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    sendPostRequest();
+    // sendPostRequest();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    String? _selectedState;
+    String? selectedAge;
+    String? selectedGender;
+    String? selectedChestPainType;
+    String? selectedRestingBloodPressure;
+    String? selectedFastingBloodSugar;
+    String? selectedRestingECG;
+    String? selectedMaxHeartRate;
+    String? selectedExerciseInducedAngina;
+    String? selectedSTDepression;
+    String? selectedSlope;
+    String? selectedNumMajorVessels;
+    String? selectedThalassemia;
+    String? selectedHeartDisease;
+
+    List<String?> selectedItems = [
+      selectedAge,
+      selectedGender,
+      selectedChestPainType,
+      selectedRestingBloodPressure,
+      selectedFastingBloodSugar,
+      selectedRestingECG,
+      selectedMaxHeartRate,
+      selectedExerciseInducedAngina,
+      selectedSTDepression,
+      selectedSlope,
+      selectedNumMajorVessels,
+      selectedThalassemia,
+      selectedHeartDisease,
+    ];
+
     List<Color> containerColors = [
       Color(0xFF7266f8),
       Color(0xFF0e8a82),
       Color(0xFF9285f1),
       Color(0xFFb4b6b7),
       Color(0xFF5ec5bf),
-      Color(0xFF7266f8),
-      Color(0xFF7266f8),
-      Color(0xFF7266f8),
-      Color(0xFF7266f8),
-      Color(0xFF7266f8),
-      Color(0xFF7266f8),
-      Color(0xFF7266f8),
-      Color(0xFF7266f8),
+      Color(0xFFfdd5be),
+      Color(0xFFbecffd),
+      Color(0xFF9ff5c2),
+      Color(0xFFa3f1e8),
+      Color(0xFFfff5e3),
+      Color(0xFFe4f0fe),
+      Color(0xFFffeaea),
+      Color(0xFF6d79ed),
     ];
 
     List<String> containerData = [
@@ -54,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
     List<String> containerIcons = [
       "assets/icons/age_icon.png",
       "assets/icons/gender_sex_icon.png",
-      "assets/icons/age_icon.png",
+      "assets/icons/chest_pain.jpg",
       "assets/icons/blood pressure icon.png",
       "assets/icons/blood sugar icon.png",
       "assets/icons/restingecg_icon.png",
@@ -81,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     List<String> restingBloodPressure =
-        List.generate(100, (index) => "${index.toString()}mm Hg");
+        List.generate(100, (index) => "${index.toString()}");
 
     List<String> fastingBloodSugatGreaterThan120mg = [
       "True",
@@ -94,14 +128,14 @@ class _HomeScreenState extends State<HomeScreen> {
       "Showing probable or definite left ventricular hypertrophy by Estes' criteria",
     ];
 
-    List<String> maxHeartRate = List.generate(100, (index) => index.toString());
+    List<String> maxHeartRate = List.generate(300, (index) => index.toString());
 
     List<String> exerciseInducedAngina = [
       "Yes",
       "No",
     ];
 
-    List<String> stDepression = List.generate(100, (index) => index.toString());
+    List<String> stDepression = List.generate(300, (index) => index.toString());
 
     List<String> slopeOfPeakExercise = [
       "Upsloping",
@@ -123,17 +157,9 @@ class _HomeScreenState extends State<HomeScreen> {
       "Reversible defect",
     ];
 
-    List<String> states = [
-      'Abia',
-      'Adamawa',
-      'Akwa Ibom',
-      'Anambra',
-      'Bauchi',
-      'Bayelsa',
-      'Benue',
-      'Borno',
-      'Cross River',
-      'Zamfara'
+    List<String> heartDisease = [
+      "0",
+      "1",
     ];
 
     List<List<String>> myData = [
@@ -149,15 +175,24 @@ class _HomeScreenState extends State<HomeScreen> {
       slopeOfPeakExercise,
       numMajorVessels,
       thalassemia,
-      states,
+      heartDisease,
     ];
+    String storedName = Provider.of<NameProvider>(context).enteredName;
 
     return Scaffold(
       body: Column(
         children: [
           Text(
-            "Hey! Adedayo, What's your Cholesterol level?",
-            style: TextStyle(fontSize: 25),
+            "Hey! $storedName, What's your Cholesterol level?",
+            style: TextStyle(
+              fontSize: getValueForScreenType<double>(
+                context: context,
+                mobile: 17.sp,
+                tablet: 17.sp,
+                desktop: 25,
+              ),
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Expanded(
             child: GridView.builder(
@@ -172,6 +207,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               itemCount: 13,
               itemBuilder: (BuildContext context, int index) {
+                var dropdownProvider =
+                    Provider.of<DropdownSelectionProvider>(context);
+
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -206,7 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.white,
                               size: 30,
                             ),
-                            value: _selectedState,
+                            value: dropdownProvider.selectedItems[index],
                             borderRadius: BorderRadius.circular(15),
                             items: myData[index]
                                 .map<DropdownMenuItem<String>>((String value) {
@@ -215,16 +253,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Text(
                                   value,
                                   style: TextStyle(
-                                    color: const Color(0xFF868686),
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 17,
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: getValueForScreenType<double>(
+                                      context: context,
+                                      mobile: 17.sp,
+                                      tablet: 20,
+                                      desktop: 17,
+                                    ),
                                   ),
                                 ),
                               );
                             }).toList(),
                             onChanged: (newValue) {
                               setState(() {
-                                _selectedState = newValue;
+                                dropdownProvider.updateSelectedItem(
+                                    index, newValue);
+
+                                print(dropdownProvider.selectedItems[0]);
                               });
                             },
                             // style: const TextStyle(
@@ -236,14 +283,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               border: InputBorder.none,
                               hintText: containerData[index],
                               hintStyle: TextStyle(
-                                color: const Color(0xFFCDCDCD),
+                                color: Colors.black,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 15,
                               ),
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'Please select your state';
+                                return 'Please Select a field here';
                               }
                               return null;
                             },
@@ -257,6 +304,81 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
           ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: getValueForScreenType<double>(
+                context: context,
+                mobile: 15.w,
+                tablet: 15.w,
+                desktop: 50,
+              ),
+              vertical: getValueForScreenType<double>(
+                context: context,
+                mobile: 15.h,
+                tablet: 15.h,
+                desktop: 10,
+              ),
+            ),
+            child: CustomButton(
+                buttonText: "Check",
+                buttonTextColor: Colors.black,
+
+                // buttonColor: ,
+                borderRadius: 20,
+                onTap: () async {
+                  var dropdownProvider = Provider.of<DropdownSelectionProvider>(
+                      context,
+                      listen: false);
+                  Map<String, dynamic> inputData = {
+                    "Age": int.parse(dropdownProvider.selectedItems[0]!),
+                    "Gender": dropdownProvider.selectedItems[1],
+                    "ChestPainType": dropdownProvider.selectedItems[2],
+                    "RestingBloodPressure":
+                        int.parse(dropdownProvider.selectedItems[3]!),
+                    "FastingBloodSugar": dropdownProvider.selectedItems[4],
+                    "RestingECG": dropdownProvider.selectedItems[5],
+                    "MaxHeartRate":
+                        int.parse(dropdownProvider.selectedItems[6]!),
+                    "ExerciseInducedAngina": dropdownProvider.selectedItems[7],
+                    "STDepression":
+                        double.parse(dropdownProvider.selectedItems[8]!),
+                    "Slope": dropdownProvider.selectedItems[9]!,
+                    "NumMajorVessels":
+                        int.parse(dropdownProvider.selectedItems[10]!),
+                    "Thalassemia": dropdownProvider.selectedItems[11],
+                    "HeartDisease":
+                        int.parse(dropdownProvider.selectedItems[12]!),
+                  };
+                  print(inputData);
+                  try {
+                    double predictedCholesterol =
+                        await sendPostRequest(inputData);
+
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                            title: Text("Check Completed!"),
+                            content: Text(
+                              "Your chelostrol level is: $predictedCholesterol",
+                              style: TextStyle(
+                                fontSize: getValueForScreenType<double>(
+                                  context: context,
+                                  mobile: 15.sp,
+                                  tablet: 14.sp,
+                                  desktop: 16,
+                                ),
+                              ),
+                            ));
+                      },
+                    );
+                    print('Predicted Cholesterol: $predictedCholesterol');
+                  } catch (e) {
+                    // Handle errors
+                    print('Error: $e');
+                  }
+                }),
+          )
         ],
       ),
     );

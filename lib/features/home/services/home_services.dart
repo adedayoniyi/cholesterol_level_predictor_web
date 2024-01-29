@@ -1,25 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-Future<void> sendPostRequest() async {
+Future<double> sendPostRequest(Map<String, dynamic> inputData) async {
   final String apiUrl =
-      "https://cholesterol-level-predictor-server.onrender.com/cholesterol/predict-cholesterol";
-  // Sample input data
-  Map<String, dynamic> inputData = {
-    "Age": 50,
-    "Gender": "Male",
-    "ChestPainType": "Typical angina",
-    "RestingBloodPressure": 130,
-    "FastingBloodSugar": false,
-    "RestingECG": "ST-T wave abnormality",
-    "MaxHeartRate": 122,
-    "ExerciseInducedAngina": "No",
-    "STDepression": 0.0,
-    "Slope": "Flat",
-    "NumMajorVessels": 1,
-    "Thalassemia": "Normal",
-    "HeartDisease": 1
-  };
+      'https://cholesterol-level-predictor-server.onrender.com/cholesterol/predict-cholesterol';
 
   try {
     final response = await http.post(
@@ -32,16 +16,17 @@ Future<void> sendPostRequest() async {
 
     if (response.statusCode == 200) {
       // Successful response
-      print('Response Body: ${response.body}');
       Map<String, dynamic> responseData = jsonDecode(response.body);
       double predictedCholesterol = responseData['predicted_cholesterol'];
-      print('Predicted Cholesterol: $predictedCholesterol');
+      return predictedCholesterol;
     } else {
       // Handle errors
       print('Error: ${response.statusCode}, ${response.reasonPhrase}');
+      throw Exception('Failed to predict cholesterol');
     }
   } catch (e) {
     // Handle exceptions
     print('Exception: $e');
+    throw Exception('Failed to predict cholesterol');
   }
 }
