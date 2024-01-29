@@ -2,7 +2,6 @@ import 'package:cholesterol_predictor/features/home/providers/drop_down_selectio
 import 'package:cholesterol_predictor/features/home/services/home_services.dart';
 import 'package:cholesterol_predictor/features/welcome/providers/name_provider.dart';
 import 'package:cholesterol_predictor/widgets/custom_button.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -55,19 +54,19 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     List<Color> containerColors = [
-      Color(0xFF7266f8),
-      Color(0xFF0e8a82),
-      Color(0xFF9285f1),
-      Color(0xFFb4b6b7),
-      Color(0xFF5ec5bf),
-      Color(0xFFfdd5be),
-      Color(0xFFbecffd),
-      Color(0xFF9ff5c2),
-      Color(0xFFa3f1e8),
-      Color(0xFFfff5e3),
-      Color(0xFFe4f0fe),
-      Color(0xFFffeaea),
-      Color(0xFF6d79ed),
+      const Color(0xFF7266f8),
+      const Color(0xFF0e8a82),
+      const Color(0xFF9285f1),
+      const Color(0xFFb4b6b7),
+      const Color(0xFF5ec5bf),
+      const Color(0xFFfdd5be),
+      const Color(0xFFbecffd),
+      const Color(0xFF9ff5c2),
+      const Color(0xFFa3f1e8),
+      const Color(0xFFfff5e3),
+      const Color(0xFFe4f0fe),
+      const Color(0xFFffeaea),
+      const Color(0xFF6d79ed),
     ];
 
     List<String> containerData = [
@@ -215,6 +214,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Expanded(
               child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: getValueForScreenType<int>(
                     context: context,
@@ -230,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Provider.of<DropdownSelectionProvider>(context);
 
                   return Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(10),
                     child: Container(
                       height: 100,
                       width: 300,
@@ -239,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: containerColors[index]),
                       child: Row(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Container(
@@ -250,15 +250,20 @@ class _HomeScreenState extends State<HomeScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Center(
-                              child: Image.asset(containerIcons[index]),
+                              child: ClipRRect(
+                                child: Image.asset(
+                                  containerIcons[index],
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Expanded(
                             child: DropdownButtonFormField(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.keyboard_arrow_down,
                                 color: Colors.white,
                                 size: 30,
@@ -302,7 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: containerData[index],
-                                hintStyle: TextStyle(
+                                hintStyle: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 15,
@@ -406,7 +411,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                              title: Text("Check Completed!"),
+                              title: const Text("Check Completed!"),
                               content: Text(
                                 "Your chelostrol level is: $predictedCholesterol",
                                 style: TextStyle(

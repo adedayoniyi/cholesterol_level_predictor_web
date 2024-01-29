@@ -107,12 +107,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         borderRadius: 20,
                         onTap: () {
                           if (nameFormKey.currentState!.validate()) {
-                            // Get the NameProvider from the context
                             var nameProvider = Provider.of<NameProvider>(
                                 context,
                                 listen: false);
 
-                            // Save the entered name using the provider
                             nameProvider.setEnteredName(nameController.text);
                             Navigator.push(
                               context,
