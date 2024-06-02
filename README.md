@@ -1,7 +1,7 @@
 # Cholesterol Level Predicting Website
 
 - [Live Link Here](https://cholesterol.netlify.app/)
-- [Python FastAPI backend repo Here]([https://cholesterol.netlify.app/](https://github.com/adedayoniyi/cholesterol_level_predictor))
+- [Python FastAPI backend repo Here](https://github.com/adedayoniyi/cholesterol_level_predictor)
 
 <br>
 
